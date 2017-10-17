@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration debug="false" status="false" strict="true"
+               monitorInterval="1">
+
+    <!-- Rolling file Appender -->
+    <appenders>
+        <RollingFile name="ServerLogger" fileName="logs/server.log" immediateFlush="false"
+                     filePattern="${sys:catalina.base}/logs/server.log-%i.%d{yyyy-MM-dd}.gz">
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1 GB" />
+                <TimeBasedTriggeringPolicy interval="1"
+                                           modulate="true" />
+            </Policies>
+            <DefaultRolloverStrategy max="20" />
+            <PatternLayout
+                    pattern="[%d{dd-MMM-yyyy HH:mm:ss,SSS}%X{requestId}] [%t] [%-5p] [%c{1}:%L] - %m%n" />
+        </RollingFile>
+         		<Console name="Console" target="SYSTEM_OUT">
+         			<PatternLayout
+         				pattern="[%d{dd-MMM-yyyy HH:mm:ss,SSS}%X{requestId}] [%t] [%-5p] [%c{1}:%L] - %m%n" />
+         		</Console>
+    </appenders>
+
+    <loggers>
+        <AsyncLogger name="com.nse" level="DEBUG" />
+        <Asyncroot level="DEBUG">
+            <appender-ref ref="ServerLogger" />
+            <appender-ref ref="Console" />
+        </Asyncroot>
+    </loggers>
+</configuration>
